@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thomas Joffroy | Cybersécurité &amp; Administration Systèmes</title>
+<meta name="description" content="Portfolio de Thomas Joffroy, Cybersécurité Junior, Administration Systèmes et Sécurité. 5 ans chez Nexeya France en environnement industriel sensible.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F3F2EE;
+    --surface:#FAF9F6;
+    --surface-2:#ECEAE4;
+    --ink:#23272F;
+    --ink-soft:#4A505B;
+    --muted:#7A7F88;
+    --line:#DEDBD3;
+    --accent:#4B6680;
+    --accent-soft:#E3E8ED;
+    --maxw:1000px;
+    --pad:clamp(16px, 5vw, 56px);
+    --radius:10px;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#1B1D21;
+      --surface:#212429;
+      --surface-2:#282B31;
+      --ink:#E6E4DF;
+      --ink-soft:#B9BCC2;
+      --muted:#8B9098;
+      --line:#34373D;
+      --accent:#9DB3C7;
+      --accent-soft:#2A323B;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1B1D21;
+    --surface:#212429;
+    --surface-2:#282B31;
+    --ink:#E6E4DF;
+    --ink-soft:#B9BCC2;
+    --muted:#8B9098;
+    --line:#34373D;
+    --accent:#9DB3C7;
+    --accent-soft:#2A323B;
+  }
+
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; scroll-padding-top:72px; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size:16px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  p{ margin:0; }
+  ul{ margin:0; padding:0; list-style:none; }
+  a{ color:inherit; text-decoration:none; }
+  h1,h2,h3,h4{ margin:0; letter-spacing:-0.015em; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace; }
+  :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:4px; }
+
+  .wrap{ max-width:var(--maxw); margin-inline:auto; padding-inline:var(--pad); }
+
+  /* ---------- Header ---------- */
+  .hero{ padding:64px 0 36px; }
+  .hero-id{ display:flex; align-items:center; gap:clamp(16px, 3vw, 24px); }
+  .avatar{
+    flex:none; width:clamp(72px, 12vw, 96px); height:clamp(72px, 12vw, 96px);
+    border-radius:50%; object-fit:cover; border:1px solid var(--line); background:var(--surface-2);
+  }
+  .hero h1{ font-size:clamp(2.1rem, 5.5vw, 3.2rem); font-weight:700; line-height:1.1; }
+  .hero-role{ margin-top:10px; font-size:clamp(1rem, 2.2vw, 1.2rem); color:var(--accent); font-weight:500; }
+  .hero-tagline{ margin-top:16px; max-width:620px; color:var(--ink-soft); }
+  .hero-meta{ margin-top:14px; font-size:.85rem; color:var(--muted); }
+
+  .hero-actions{ margin-top:28px; display:flex; flex-wrap:wrap; gap:10px; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:10px 16px; border-radius:999px; font-size:.9rem; font-weight:500;
+    border:1px solid var(--line); background:var(--surface); color:var(--ink);
+    transition:background .2s var(--ease), border-color .2s var(--ease), transform .2s var(--ease);
+  }
+  .btn:hover{ border-color:var(--accent); transform:translateY(-1px); }
+  .btn-primary{ background:var(--accent); border-color:var(--accent); color:var(--surface); }
+  .btn-primary:hover{ filter:brightness(1.08); }
+
+  /* ---------- Tabs ---------- */
+  .tabs{
+    position:sticky; top:0; z-index:40;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:saturate(1.2) blur(10px);
+    -webkit-backdrop-filter:saturate(1.2) blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .tablist{
+    display:flex; gap:4px; overflow-x:auto; padding-block:10px;
+    scrollbar-width:none; scroll-snap-type:x proximity;
+  }
+  .tablist::-webkit-scrollbar{ display:none; }
+  .tab{
+    flex:none; scroll-snap-align:start;
+    font:inherit; font-size:.9rem; font-weight:500; color:var(--muted);
+    background:none; border:0; cursor:pointer;
+    padding:8px 14px; border-radius:999px;
+    transition:color .2s var(--ease), background .2s var(--ease);
+  }
+  .tab:hover{ color:var(--ink); background:var(--surface-2); }
+  .tab[aria-selected="true"]{ color:var(--ink); background:var(--accent-soft); }
+
+  /* ---------- Panels ---------- */
+  main{ padding:48px 0 80px; min-height:60vh; }
+  .panel + .panel{ margin-top:72px; }
+  .js .panel + .panel{ margin-top:0; }
+  .js .panel[hidden]{ display:none; }
+  .js .panel.is-entering{ animation:fadeIn .35s var(--ease) both; }
+  @keyframes fadeIn{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:none; } }
+
+  .panel h2{ font-size:clamp(1.5rem, 3vw, 1.9rem); font-weight:650; }
+  .lead{ margin-top:12px; color:var(--ink-soft); max-width:640px; }
+
+  .card{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:clamp(20px, 3vw, 28px);
+  }
+  .stack{ display:flex; flex-direction:column; gap:16px; margin-top:28px; }
+
+  /* Profil */
+  .profil-body{ margin-top:24px; max-width:680px; display:flex; flex-direction:column; gap:16px; color:var(--ink-soft); }
+  .facts{ margin-top:32px; display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  .fact .num{ font-size:1.4rem; font-weight:500; color:var(--ink); }
+  .fact .label{ margin-top:2px; font-size:.82rem; color:var(--muted); line-height:1.4; }
+
+  /* Records */
+  .rec-head{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .rec-head h3{ font-size:1.08rem; font-weight:600; }
+  .rec-org{ margin-top:2px; font-size:.9rem; color:var(--muted); }
+  .rec-dates{ font-size:.8rem; color:var(--muted); white-space:nowrap; }
+  .badge{
+    display:inline-block; margin-left:8px; padding:1px 8px; border-radius:999px;
+    font-size:.72rem; font-weight:500; background:var(--accent-soft); color:var(--accent); vertical-align:2px;
+  }
+  .bullets{ margin-top:14px; display:flex; flex-direction:column; gap:6px; }
+  .bullets li{ position:relative; padding-left:16px; color:var(--ink-soft); font-size:.95rem; }
+  .bullets li::before{ content:""; position:absolute; left:2px; top:.7em; width:5px; height:5px; border-radius:50%; background:var(--accent); opacity:.6; }
+
+  /* Projets */
+  .eyebrow{ font-size:.74rem; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); }
+  .case h3{ margin-top:6px; font-size:1.25rem; font-weight:600; }
+  .case-sub{ margin-top:18px; }
+  .case-sub h4{ font-size:.74rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  .case-sub p{ margin-top:4px; color:var(--ink-soft); font-size:.96rem; max-width:680px; }
+  .stats{ margin-top:22px; padding-top:18px; border-top:1px solid var(--line); display:flex; flex-wrap:wrap; gap:16px 40px; }
+  .stat .num{ font-size:1.3rem; font-weight:500; }
+  .stat .label{ font-size:.8rem; color:var(--muted); max-width:200px; }
+
+  /* Détail projet */
+  .more{ margin-top:22px; }
+  .tab-sub{ font-size:.84rem; }
+  .tab-sub::before{ content:"↳ "; opacity:.5; }
+  .back{ display:inline-flex; align-items:center; gap:6px; font-size:.86rem; color:var(--muted); margin-bottom:18px; }
+  .back:hover{ color:var(--accent); }
+  .detail-head .lead{ max-width:720px; }
+  .kpis{ margin-top:24px; display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:12px; }
+  .kpi .num{ font-size:1.35rem; font-weight:500; }
+  .kpi .label{ margin-top:2px; font-size:.8rem; color:var(--muted); line-height:1.4; }
+  .block{ margin-top:48px; }
+  .block > h3{ font-size:1.15rem; font-weight:650; }
+  .block > .lead{ margin-top:8px; font-size:.97rem; }
+  .prose{ margin-top:14px; display:flex; flex-direction:column; gap:12px; color:var(--ink-soft); max-width:720px; font-size:.96rem; }
+  .two{ margin-top:18px; display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+  .card h4{ font-size:.95rem; font-weight:600; }
+  .table-wrap{ margin-top:18px; overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); }
+  table{ width:100%; border-collapse:collapse; font-size:.9rem; min-width:560px; }
+  th, td{ text-align:left; padding:11px 14px; border-top:1px solid var(--line); vertical-align:top; }
+  thead th{ border-top:0; font-size:.74rem; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; background:var(--surface-2); }
+  td{ color:var(--ink-soft); }
+  td strong{ color:var(--ink); font-weight:600; }
+  .tag{ display:inline-block; padding:1px 8px; border-radius:999px; font-size:.74rem; font-weight:500; white-space:nowrap; }
+  .tag-ok{ background:var(--accent-soft); color:var(--accent); }
+  .tag-no{ background:var(--surface-2); color:var(--muted); }
+  .steps{ margin:18px 0 0; padding:0; list-style:none; counter-reset:step; display:flex; flex-direction:column; gap:10px; }
+  .steps li{ counter-increment:step; position:relative; padding:14px 16px 14px 56px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); color:var(--ink-soft); font-size:.94rem; }
+  .steps li::before{
+    content:counter(step); position:absolute; left:16px; top:13px; width:26px; height:26px; border-radius:50%;
+    display:grid; place-items:center; font-family:'JetBrains Mono', monospace; font-size:.8rem;
+    background:var(--accent-soft); color:var(--accent);
+  }
+  .steps li strong{ color:var(--ink); font-weight:600; }
+  .gallery{ margin-top:18px; display:grid; grid-template-columns:repeat(2,1fr); gap:16px; align-items:start; }
+  .gallery-wide{ grid-column:1 / -1; }
+  figure{ margin:0; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  figure button{ display:block; width:100%; padding:0; border:0; background:#fff; cursor:zoom-in; }
+  figure img{ display:block; width:100%; height:auto; max-height:420px; object-fit:contain; }
+  figcaption{ padding:10px 14px; font-size:.82rem; color:var(--muted); border-top:1px solid var(--line); }
+  .callout{ margin-top:18px; padding:16px 18px; border-left:3px solid var(--accent); background:var(--accent-soft); border-radius:0 var(--radius) var(--radius) 0; color:var(--ink-soft); font-size:.94rem; max-width:760px; }
+  .callout strong{ color:var(--ink); }
+  .lightbox{ border:0; padding:0; background:transparent; max-width:min(1200px, 94vw); max-height:92vh; }
+  .lightbox::backdrop{ background:rgba(15,17,20,.82); }
+  .lightbox img{ display:block; max-width:100%; max-height:88vh; border-radius:8px; background:#fff; }
+  .lightbox form{ position:absolute; top:8px; right:8px; }
+  .lightbox .close{ font:inherit; font-size:.85rem; padding:6px 12px; border-radius:999px; border:0; background:rgba(0,0,0,.6); color:#fff; cursor:pointer; }
+
+  /* Compétences */
+  .skills{ margin-top:28px; display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+  .skills-wide{ grid-column:1 / -1; }
+  .skills h3{ font-size:.95rem; font-weight:600; }
+  .chips{ margin-top:12px; display:flex; flex-wrap:wrap; gap:6px; }
+  .chip{ font-size:.82rem; padding:4px 10px; border-radius:6px; background:var(--surface-2); color:var(--ink-soft); }
+  .note{ margin-top:20px; color:var(--ink-soft); font-size:.94rem; }
+
+  /* Formation */
+  .cert-list li{
+    display:flex; justify-content:space-between; align-items:baseline; gap:16px;
+    padding-block:12px; border-top:1px solid var(--line); color:var(--ink-soft);
+  }
+  .cert-list li:first-child{ border-top:0; padding-top:0; }
+  .cert-list li:last-child{ padding-bottom:0; }
+  .cert-status{ font-size:.76rem; color:var(--muted); white-space:nowrap; }
+  .subhead{ margin-top:40px; font-size:1.1rem; font-weight:600; }
+
+  /* Contact */
+  .contact-grid{ margin-top:28px; display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+  .contact-item .k{ display:block; font-size:.74rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+  .contact-item .v{ display:block; margin-top:4px; font-size:.95rem; word-break:break-word; }
+  .contact-item a.v{ color:var(--accent); }
+  .contact-item a.v:hover{ text-decoration:underline; text-underline-offset:3px; }
+
+  .footer{ padding:28px 0 40px; border-top:1px solid var(--line); font-size:.8rem; color:var(--muted); }
+  .footer .wrap{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px 20px; }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation:none !important; transition:none !important; }
+  }
+  @media (max-width: 760px){
+    .facts{ grid-template-columns:repeat(2,1fr); }
+    .skills, .contact-grid, .two, .gallery{ grid-template-columns:1fr; }
+    .hero{ padding:44px 0 28px; }
+    main{ padding:32px 0 64px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="hero" id="top">
+    <div class="wrap">
+      <div class="hero-id">
+        <img class="avatar" src="photo-thomas-joffroy.jpg" alt="Photo de Thomas Joffroy" width="96" height="96">
+        <div>
+          <h1>Thomas Joffroy</h1>
+          <p class="hero-role">Cybersécurité Junior, Administration Systèmes et Sécurité</p>
+        </div>
+      </div>
+      <p class="hero-tagline">5 ans chez Nexeya France en environnement industriel sensible : supervision EDR, administration Active Directory, réponse à une cyberattaque réelle.</p>
+      <p class="hero-meta mono">Île-de-France (91) · Permis B, véhiculé · Disponible novembre 2026</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="CV-Thomas-Joffroy.pdf?v=2" target="_blank" rel="noopener">Télécharger le CV (PDF)</a>
+        <a class="btn" href="mailto:thomas.joffroy@gmail.com">thomas.joffroy@gmail.com</a>
+        <a class="btn" href="https://www.linkedin.com/in/thomas-joffroy91" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="Sections du portfolio">
+    <div class="wrap tablist" role="tablist">
+      <button class="tab" role="tab" id="tab-profil" aria-controls="profil" aria-selected="true">Profil</button>
+      <button class="tab" role="tab" id="tab-experience" aria-controls="experience" aria-selected="false">Expérience</button>
+      <button class="tab" role="tab" id="tab-projets" aria-controls="projets" aria-selected="false">Projets</button>
+      <button class="tab tab-sub" role="tab" id="tab-projet-mdm" aria-controls="projet-mdm" aria-selected="false">Projet MDM</button>
+      <button class="tab tab-sub" role="tab" id="tab-projet-phishing" aria-controls="projet-phishing" aria-selected="false">Projet Phishing</button>
+      <button class="tab" role="tab" id="tab-competences" aria-controls="competences" aria-selected="false">Compétences</button>
+      <button class="tab" role="tab" id="tab-formation" aria-controls="formation" aria-selected="false">Formation</button>
+      <button class="tab" role="tab" id="tab-contact" aria-controls="contact" aria-selected="false">Contact</button>
+    </div>
+  </nav>
+
+  <main class="wrap">
+
+    <section class="panel" id="profil" role="tabpanel" aria-labelledby="tab-profil" tabindex="0">
+      <h2>Profil</h2>
+      <div class="profil-body">
+        <p>5 ans chez Nexeya France, en environnement industriel sensible, sur des sujets d'administration systèmes, réseaux et sécurité. Je supervise et investigue les alertes de sécurité via l'EDR Cybereason sur un parc de 700+ endpoints, j'administre Active Directory, GPO et DFS au quotidien, et j'ai participé à la remédiation d'une cyberattaque réelle.</p>
+        <p>Cette cyberattaque, vécue de l'intérieur, a été le déclic : participer à la reconstruction du réseau en conditions dégradées m'a convaincu d'orienter ma carrière vers la sécurité. Depuis, j'ai piloté deux projets internes de sécurisation, sur la messagerie et sur la flotte mobile.</p>
+        <p>Dans le cadre de mon Mastère, j'ai conçu une infrastructure de supervision avec corrélation de logs et détection d'IoC. Certifié Cisco CCNA et CyberOps Associate, Mastère Expert Cybersécurité (RNCP7) en cours.</p>
+      </div>
+      <div class="facts">
+        <div class="card fact"><div class="num mono">5 ans</div><div class="label">d'expérience en alternance chez Nexeya France</div></div>
+        <div class="card fact"><div class="num mono">700+</div><div class="label">endpoints supervisés via EDR</div></div>
+        <div class="card fact"><div class="num mono">600+</div><div class="label">comptes utilisateurs gérés</div></div>
+        <div class="card fact"><div class="num mono">2</div><div class="label">projets de sécurisation pilotés</div></div>
+      </div>
+    </section>
+
+    <section class="panel" id="experience" role="tabpanel" aria-labelledby="tab-experience" tabindex="0">
+      <h2>Expérience professionnelle</h2>
+      <p class="lead">Cinq ans en alternance chez Nexeya France, avec une progression continue du support vers la sécurité.</p>
+      <div class="stack">
+        <article class="card">
+          <div class="rec-head">
+            <div>
+              <h3>Administrateur Système et Sécurité</h3>
+              <p class="rec-org">Nexeya France, alternance</p>
+            </div>
+            <span class="rec-dates mono">2024 – 2026</span>
+          </div>
+          <ul class="bullets">
+            <li>Administration Active Directory, GPO et DFS pour un parc de 700+ endpoints</li>
+            <li>Supervision et investigation d'alertes via l'EDR Cybereason, réponse aux menaces</li>
+            <li>Durcissement continu de l'infrastructure, réduction de la surface d'attaque sur la messagerie et les terminaux mobiles</li>
+            <li>Traitement des incidents de phishing et gestion des politiques de filtrage antispam (Vade Secure)</li>
+            <li>Administration de la protection antivirus des terminaux via Trellix</li>
+            <li>Gestion des comptes utilisateurs sur Azure (Entra ID)</li>
+          </ul>
+        </article>
+        <article class="card">
+          <div class="rec-head">
+            <div>
+              <h3>Administrateur Système</h3>
+              <p class="rec-org">Nexeya France, alternance</p>
+            </div>
+            <span class="rec-dates mono">2023 – 2024</span>
+          </div>
+          <ul class="bullets">
+            <li>Réponse à un incident de cyberattaque réel, participation à la reconstruction du réseau en conditions dégradées</li>
+            <li>Administration d'une quinzaine de serveurs de rebond et sécurisation des connexions</li>
+          </ul>
+        </article>
+        <article class="card">
+          <div class="rec-head">
+            <div>
+              <h3>Technicien Support N2</h3>
+              <p class="rec-org">Nexeya France, alternance</p>
+            </div>
+            <span class="rec-dates mono">2021 – 2023</span>
+          </div>
+          <ul class="bullets">
+            <li>Gestion des comptes AD et des droits d'accès réseau pour 600+ utilisateurs et 700+ endpoints</li>
+            <li>Diagnostic et résolution d'incidents matériels, logiciels et réseau</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" id="projets" role="tabpanel" aria-labelledby="tab-projets" tabindex="0">
+      <h2>Projets techniques</h2>
+      <p class="lead">Deux projets internes pilotés en tant que chef de projet chez Nexeya France, et un projet de groupe réalisé pendant le Mastère ESI.</p>
+      <div class="stack">
+        <article class="card case">
+          <p class="eyebrow mono">Mastère ESI · projet de groupe · 2025 – 2026</p>
+          <h3>Monitoring et détection d'incidents, projet LVMG</h3>
+          <ul class="bullets">
+            <li>Conception d'une infrastructure de supervision avec centralisation des logs et corrélation d'événements</li>
+            <li>Dashboards Grafana pour la détection de compromission (IoC), mapping MITRE ATT&amp;CK</li>
+            <li>Simulation d'attaques (brute force, mouvement latéral, SQLi) et analyse des traces</li>
+          </ul>
+        </article>
+
+        <article class="card case">
+          <p class="eyebrow mono">Chef de projet · Nexeya France · 2024 – 2025</p>
+          <h3>Sécurisation des flux de messagerie</h3>
+          <div class="case-sub">
+            <h4>Problème</h4>
+            <p>La majorité des compromissions commence par un facteur humain, et aucune sensibilisation cyber récurrente n'existait dans l'entreprise malgré un secteur fortement ciblé.</p>
+          </div>
+          <div class="case-sub">
+            <h4>Approche</h4>
+            <p>Déploiement d'un bouton d'alerte phishing sur l'Outlook des collaborateurs, avec traitement des signalements côté sécurité, puis campagne de phishing interne pour tester et ajuster la formation des collaborateurs.</p>
+          </div>
+          <div class="stats mono">
+            <div class="stat"><div class="num">620</div><div class="label">collaborateurs couverts par le programme, 100 % de l'effectif</div></div>
+            <div class="stat"><div class="num">30 %</div><div class="label">de taux de signalement via le bouton d'alerte</div></div>
+            <div class="stat"><div class="num">13 %</div><div class="label">taux de clic moyen, en baisse sur la campagne</div></div>
+          </div>
+          <a class="btn more" href="#projet-phishing">Voir le projet en détail →</a>
+        </article>
+
+        <article class="card case">
+          <p class="eyebrow mono">Chef de projet · Nexeya France · 2024 – 2025</p>
+          <h3>Intégration MDM, flotte mobile professionnelle</h3>
+          <div class="case-sub">
+            <h4>Problème</h4>
+            <p>Près de 280 terminaux professionnels Android et iOS sans gestion centralisée, chaque téléphone sous la seule responsabilité de son utilisateur.</p>
+          </div>
+          <div class="case-sub">
+            <h4>Approche</h4>
+            <p>Benchmark de solutions MDM avec la souveraineté (RGPD, ANSSI) comme critère éliminatoire, Proof of Concept, puis déploiement de conteneurs chiffrés et managés via Pushmanager et migration de la flotte mobile professionnelle.</p>
+          </div>
+          <div class="stats mono">
+            <div class="stat"><div class="num">280</div><div class="label">terminaux sécurisés et conformes</div></div>
+            <div class="stat"><div class="num">3 mois</div><div class="label">du benchmark au déploiement complet</div></div>
+          </div>
+          <a class="btn more" href="#projet-mdm">Voir le projet en détail →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" id="projet-mdm" role="tabpanel" aria-labelledby="tab-projet-mdm" tabindex="0">
+      <a class="back" href="#projets">← Retour aux projets</a>
+      <div class="detail-head">
+        <p class="eyebrow mono">Chef de projet · Industrie de défense · Projet de 3 mois</p>
+        <h2>Intégration d'un MDM souverain pour la flotte mobile</h2>
+        <p class="lead">De zéro gestion centralisée à une flotte de ~280 smartphones enrôlés, conteneurisés et durcis : benchmark, Proof of Concept, architecture, déploiement, puis optimisation des licences.</p>
+      </div>
+      <div class="kpis">
+        <div class="card kpi"><div class="num mono">~280</div><div class="label">terminaux enrôlés et sécurisés</div></div>
+        <div class="card kpi"><div class="num mono">3 mois</div><div class="label">du benchmark au déploiement complet</div></div>
+        <div class="card kpi"><div class="num mono">5 min</div><div class="label">temps moyen d'enrôlement d'un terminal</div></div>
+        <div class="card kpi"><div class="num mono">45</div><div class="label">licences inutiles supprimées, ~1 900 € économisés par an</div></div>
+        <div class="card kpi"><div class="num mono">~20/mois</div><div class="label">tickets flotte mobile traités plus vite (perte, vol, configuration)</div></div>
+      </div>
+
+      <div class="block">
+        <h3>Contexte</h3>
+        <div class="prose">
+          <p>Environ 280 smartphones professionnels (≈ 96 % Android, une dizaine d'iOS), sans aucune solution de gestion : chaque téléphone était sous la seule responsabilité de son utilisateur. Pour une entreprise du secteur de la défense, sortie quelques années plus tôt d'une attaque par rançongiciel, c'était une porte d'entrée évidente.</p>
+          <p>L'entreprise n'avait jamais exploité de MDM. Je me suis d'abord formé seul sur le fonctionnement : séparation étanche entre un conteneur professionnel géré par l'IT et l'espace personnel, politiques de sécurité, déploiement d'applications, révocation à distance du seul conteneur pro.</p>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Critères et benchmark</h3>
+        <p class="lead">Faible coût, conformité RGPD et recommandations ANSSI, éditeur souverain, gestion Android et iOS, BYOD possible, configuration fine par utilisateur.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Solution</th><th>Points forts</th><th>Verdict</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Microsoft Intune</strong></td><td>Intégration Microsoft native</td><td><span class="tag tag-no">Écarté</span> souveraineté</td></tr>
+              <tr><td><strong>Omnissa Workspace ONE</strong></td><td>Solution UEM très complète</td><td><span class="tag tag-no">Écarté</span> souveraineté</td></tr>
+              <tr><td><strong>Jamf Pro</strong></td><td>Référence sur l'écosystème Apple</td><td><span class="tag tag-no">Écarté</span> iOS uniquement, flotte à 96 % Android</td></tr>
+              <tr><td><strong>Hexnode UEM</strong></td><td>Multi-OS, bonne réputation, coût comparable</td><td><span class="tag tag-no">Écarté</span> éditeur américain</td></tr>
+              <tr><td><strong>PushManager</strong></td><td>Éditeur français, hébergement SecNumCloud, très poussé sur Android Enterprise, personnalisation par utilisateur</td><td><span class="tag tag-ok">Retenu</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">À coût équivalent, <strong>la souveraineté a été le critère éliminatoire</strong> : dans un secteur sensible, l'hébergement des données de gestion de la flotte ne pouvait pas relever d'un droit extra-européen.</div>
+      </div>
+
+      <div class="block">
+        <h3>Proof of Concept (2 semaines)</h3>
+        <p class="lead">Une dizaine de terminaux Android et 2 iOS, avant tout engagement financier.</p>
+        <div class="two">
+          <div class="card">
+            <h4>Ce qui a été testé</h4>
+            <ul class="bullets">
+              <li>Enrôlement Android Enterprise de bout en bout</li>
+              <li>Étanchéité réelle entre conteneurs pro et perso (copier-coller, partage de fichiers)</li>
+              <li>Déploiement et préconfiguration des applications</li>
+              <li>Politiques de déverrouillage : PIN, biométrie, mot de passe</li>
+              <li>iOS : démonstration intégrateur, un certificat Apple étant requis</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Résultat</h4>
+            <ul class="bullets">
+              <li>Enrôlement simple, rapide et fiable</li>
+              <li>Conteneurs étanches et paramétrables finement</li>
+              <li>Applications remontées rapidement sur les terminaux</li>
+              <li>Moindre privilège applicable : Wi-Fi automatique, codes gérés par l'IT, listes blanches et noires d'applications</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Architecture et choix de sécurité</h3>
+        <div class="prose">
+          <p><strong>SaaS qualifié SecNumCloud</strong> (qualification ANSSI) : souveraineté des données, haut niveau de sécurité technique et gouvernance encadrée de l'hébergeur.</p>
+          <p><strong>Pas de liaison entre l'Active Directory et le SaaS.</strong> Choix délibéré pour ne pas exposer l'annuaire à un service externe : les comptes sont gérés directement dans le MDM, alimentés par import CSV.</p>
+          <p><strong>Délégation des droits (RBAC)</strong> : comptes administrateurs nominatifs pour le support, avec des droits limités au strict nécessaire (lecture seule sur les configurations et applications, modification des terminaux et utilisateurs). <strong>Unités organisationnelles</strong> par OS et par usage, chacune avec son profil de sécurité.</p>
+        </div>
+        <ol class="steps">
+          <li><strong>Import CSV des utilisateurs</strong> : identité, OU, numéro, adresse mail, identifiant. Ces attributs servent aussi de variables pour préconfigurer les applications.</li>
+          <li><strong>Création du terminal</strong> dans la console et liaison à l'utilisateur, avec le mode d'enrôlement adapté (entreprise ou BYOD).</li>
+          <li><strong>QR code d'enrôlement</strong> généré et scanné depuis le téléphone physique.</li>
+          <li><strong>Sur le téléphone</strong> : acceptation des conditions, définition du PIN du conteneur pro, installation automatique des applications.</li>
+        </ol>
+      </div>
+
+      <div class="block">
+        <h3>Durcissement du conteneur professionnel</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Paramètre</th><th>Pourquoi</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Presse-papiers pro → perso bloqué</strong></td><td>Étanchéité totale des données professionnelles, pas de fuite par copier-coller.</td></tr>
+              <tr><td><strong>Réinitialisation d'usine autorisée</strong></td><td>Pouvoir réaffecter un terminal après un départ précipité ou un PIN perdu.</td></tr>
+              <tr><td><strong>Montage de média externe interdit</strong></td><td>Aucun besoin métier : surface d'attaque réduite.</td></tr>
+              <tr><td><strong>Mises à jour système automatiques</strong></td><td>Toute la flotte reste patchée sans dépendre des utilisateurs.</td></tr>
+              <tr><td><strong>Code pro : 6 chiffres minimum, complexe</strong></td><td>Pas de suites ni de répétitions (0000, 1234). Effacement après un nombre élevé d'échecs, pour bloquer le brute force tout en laissant un droit à l'erreur.</td></tr>
+              <tr><td><strong>Biométrie + saisie du code quotidienne</strong></td><td>Plus sûr et plus confortable qu'un PIN seul. Le code reste exigé au moins une fois par jour.</td></tr>
+              <tr><td><strong>Wi-Fi entreprise préconfiguré</strong></td><td>Connexion automatique, réseau réservé aux terminaux enrôlés dans le MDM.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="prose">
+          <p>Une douzaine d'applications gérées sont poussées dans le conteneur (messagerie, collaboration, VPN et jeton MFA, authentificateur, gestionnaire de mots de passe, visioconférence sécurisée, lecteurs de documents). Outlook est <strong>préconfiguré par variables</strong> (adresse, serveur, identifiant) : l'utilisateur n'a plus qu'à saisir son mot de passe, ce qui supprime une grosse part des sollicitations au support.</p>
+        </div>
+        <div class="gallery">
+          <figure><button type="button" data-full="assets/projets/mdm-profils-configuration.webp"><img src="assets/projets/mdm-profils-configuration.webp" alt="Types de profils de configuration Android Enterprise : code, restriction, permission, conformité, listes d'applications, Wi-Fi, certificat" loading="lazy" width="1273" height="644"></button><figcaption>Profils de configuration Android Enterprise affectés par OU.</figcaption></figure>
+          <figure><button type="button" data-full="assets/projets/mdm-droits-support.webp"><img src="assets/projets/mdm-droits-support.webp" alt="Matrice de droits d'accès du support : lecture seule, modification, suppression par module" loading="lazy" width="699" height="678"></button><figcaption>Droits délégués au support, au plus juste.</figcaption></figure>
+          <figure class="gallery-wide"><button type="button" data-full="assets/projets/mdm-outlook-config.webp"><img src="assets/projets/mdm-outlook-config.webp" alt="Configuration gérée d'Outlook avec variables UserEmail et LoginEnterprise" loading="lazy" width="1400" height="749"></button><figcaption>Outlook préconfiguré par variables (valeurs internes masquées).</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Difficultés rencontrées</h3>
+        <div class="two">
+          <div class="card"><h4>Adoption par les utilisateurs</h4><p class="prose" style="margin-top:8px">Le conteneur pro a changé l'usage du téléphone : réticences, plaintes, retards. Il a fallu de la pédagogie, des relances et de la patience.</p></div>
+          <div class="card"><h4>Continuité pendant mes absences</h4><p class="prose" style="margin-top:8px">En alternance (3 semaines sur 4), l'équipe s'est retrouvée bloquée pour enrôler un nouvel arrivant. J'ai rédigé des procédures d'administration et d'enrôlement, organisé des points Teams et un transfert de compétences.</p></div>
+          <div class="card"><h4>Limites des applications</h4><p class="prose" style="margin-top:8px">La personnalisation de certaines applications dépend de leur éditeur, pas du MDM : moins de marge pour des besoins spécifiques.</p></div>
+          <div class="card"><h4>Rationalisation des licences</h4><p class="prose" style="margin-top:8px">Analyse des derniers contacts et des doublons (un utilisateur avec deux terminaux) : 45 licences supprimées, soit environ 1 900 € d'économie par an.</p></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Ce que j'en retiens</h3>
+        <div class="callout">Dans un projet d'intégration, <strong>la vraie difficulté est humaine avant d'être technique</strong>. J'ai communiqué trop tard avec les utilisateurs et documenté trop tard pour mes collègues. Aujourd'hui, je commence un projet par la communication et les procédures, pas par la console.</div>
+      </div>
+    </section>
+
+    <section class="panel" id="projet-phishing" role="tabpanel" aria-labelledby="tab-projet-phishing" tabindex="0">
+      <a class="back" href="#projets">← Retour aux projets</a>
+      <div class="detail-head">
+        <p class="eyebrow mono">Chef de projet · Industrie de défense · 2025 – 2026</p>
+        <h2>Sensibilisation cyber, bouton d'alerte et campagne de phishing simulé</h2>
+        <p class="lead">Former ~620 collaborateurs peu à l'aise avec l'informatique, leur donner un réflexe de signalement en un clic, puis mesurer leur vigilance réelle sur 12 mois.</p>
+      </div>
+      <div class="kpis">
+        <div class="card kpi"><div class="num mono">620</div><div class="label">collaborateurs couverts, 100 % de l'effectif</div></div>
+        <div class="card kpi"><div class="num mono">80 %+</div><div class="label">inscrits à la formation en ligne</div></div>
+        <div class="card kpi"><div class="num mono">~60 %</div><div class="label">de l'effectif a terminé le parcours (74 % des inscrits)</div></div>
+        <div class="card kpi"><div class="num mono">30 %</div><div class="label">des mails de phishing simulés signalés via le bouton</div></div>
+        <div class="card kpi"><div class="num mono">13 %</div><div class="label">taux de clic moyen, en baisse continue</div></div>
+        <div class="card kpi"><div class="num mono">~20/sem.</div><div class="label">domaines malveillants bloqués grâce aux signalements</div></div>
+      </div>
+
+      <div class="block">
+        <h3>Contexte</h3>
+        <div class="prose">
+          <p>Un secteur très ciblé, une attaque par rançongiciel qui avait stoppé la production pendant trois semaines, et une population majoritairement peu à l'aise avec l'informatique. Pourtant, aucune formation cyber récurrente n'existait. On m'a confié le sujet sans outil imposé.</p>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Choix de la solution</h3>
+        <p class="lead">Critères : modules FR/EN, courts et ludiques, quiz de validation, suivi individuel, relances automatiques, budget maîtrisé, thèmes adaptés (phishing, ingénierie sociale, vishing…).</p>
+        <div class="two">
+          <div class="card">
+            <h4>Option 1 : le module intégré à l'antispam existant</h4>
+            <p class="prose" style="margin-top:8px">Évalué en premier pour éviter un nouvel outil et un coût supplémentaire. Écarté : contenus trop denses pour tenir en 45 min, traduction approximative, aucun quiz, validation par simple défilement de la page.</p>
+          </div>
+          <div class="card">
+            <h4>Option 2 : SoSafe, retenu</h4>
+            <p class="prose" style="margin-top:8px">Modules courts et interactifs avec durée estimée, quiz, relances, analytics, <strong>bouton d'alerte phishing</strong> et <strong>simulation de campagnes</strong>. Comparaison côte à côte avec la responsable formation, choix validé à l'unanimité après un POC.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Intégration</h3>
+        <ol class="steps">
+          <li><strong>Import CSV des ~620 comptes</strong>, avec la langue de chacun, pour un accès direct à la plateforme.</li>
+          <li><strong>Liste blanche des domaines de simulation dans l'antispam</strong> : contournement des filtres spam uniquement, en conservant les contrôles d'expéditeur, l'anti-usurpation et l'analyse antimalware. Sans ça, les tableaux de bord auraient été faussés.</li>
+          <li><strong>Test d'acheminement</strong> de l'ensemble des modèles de phishing avant lancement.</li>
+          <li><strong>Sélection des modules sous une contrainte de 45 min</strong> : analyse d'un mail et d'un site, mots de passe, ingénierie sociale, réflexes en cas d'incident. Priorité aux profils à risque et aux moins à l'aise.</li>
+        </ol>
+        <div class="gallery">
+          <figure><button type="button" data-full="assets/projets/sensi-modules-45min.webp"><img src="assets/projets/sensi-modules-45min.webp" alt="Liste des modules de formation sélectionnés avec leur durée estimée" loading="lazy" width="475" height="755"></button><figcaption>Parcours sélectionné, chaque module avec sa durée.</figcaption></figure>
+          <figure><button type="button" data-full="assets/projets/sensi-modules-reussis.webp"><img src="assets/projets/sensi-modules-reussis.webp" alt="Modules réussis par groupe : utilisateurs 81,7 %, utilisateurs à risques 76,8 %" loading="lazy" width="734" height="413"></button><figcaption>Modules réussis par groupe d'utilisateurs.</figcaption></figure>
+          <figure class="gallery-wide"><button type="button" data-full="assets/projets/sensi-inscriptions.webp"><img src="assets/projets/sensi-inscriptions.webp" alt="Courbe des inscriptions à la plateforme de mai à décembre, jusqu'à environ 500 inscrits" loading="lazy" width="1400" height="626"></button><figcaption>Inscriptions cumulées pendant la campagne de formation (avril à décembre).</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Bouton d'alerte phishing : du clic au blocage</h3>
+        <p class="lead">Avant, signaler un mail suspect voulait dire créer un ticket à la main, et presque personne ne le faisait.</p>
+        <ol class="steps">
+          <li><strong>Complément Outlook déployé via Exchange</strong>, rendu obligatoire pour tous les comptes.</li>
+          <li><strong>Signalement en un clic</strong> : l'utilisateur précise ce qui l'a alerté (expéditeur, contenu, liens, pièces jointes).</li>
+          <li><strong>Ticket GLPI automatique</strong>, assigné au groupe Sécurité, avec le mail original en <span class="mono">.eml</span> : analyse complète des en-têtes et des liens depuis mon poste, sans prise en main à distance.</li>
+          <li><strong>Analyse</strong> : réputation (VirusTotal, URLhaus), sandbox si besoin (Any.Run), rattachement aux techniques MITRE ATT&amp;CK.</li>
+          <li><strong>Blocage</strong> du domaine ou de l'expéditeur dans l'antispam si le mail est malveillant.</li>
+        </ol>
+        <div class="gallery">
+          <figure><button type="button" data-full="assets/projets/phishing-bouton-signalement.webp"><img src="assets/projets/phishing-bouton-signalement.webp" alt="Fenêtre de signalement : expéditeur, contenu, liens, pièces jointes" loading="lazy" width="412" height="739"></button><figcaption>Côté utilisateur : signalement qualifié en un clic.</figcaption></figure>
+          <div class="card" style="align-self:start">
+            <h4>Aujourd'hui</h4>
+            <ul class="bullets">
+              <li>Une dizaine de signalements par jour</li>
+              <li>Environ 20 domaines et expéditeurs ajoutés chaque semaine à la liste noire</li>
+              <li>Roulement à deux pour tenir un délai de traitement de 24 h, y compris pendant mes semaines d'école</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Campagne de phishing simulé (12 mois)</h3>
+        <div class="prose">
+          <p>Objectif : <strong>mesurer la vigilance réelle, pas piéger</strong>. Trois modèles de difficulté facile à moyenne, chacun exploitant un biais psychologique différent. Former d'abord les moins vigilants réduit la surface d'attaque plus vite que perfectionner les meilleurs.</p>
+          <p>Envoi <strong>aléatoire et très espacé</strong> sur 12 mois : impossible de se prévenir entre collègues, et un mail isolé noyé dans le flux réel est bien plus crédible. Un clic mène à une page pédagogique qui décortique le mail et montre les indices manqués.</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Scénario</th><th>Biais exploité</th><th>Mails envoyés</th><th>Taux de clic</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Invitation à un événement interne</strong></td><td>Confiance, serviabilité</td><td class="mono">438</td><td class="mono">15,1 %</td></tr>
+              <tr><td><strong>Document de projet partagé via Dropbox</strong></td><td>Curiosité</td><td class="mono">445</td><td class="mono">12,6 %</td></tr>
+              <tr><td><strong>Mot de passe Microsoft expiré</strong></td><td>Urgence</td><td class="mono">402</td><td class="mono">10,4 %</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="gallery">
+          <figure class="gallery-wide"><button type="button" data-full="assets/projets/phishing-taux-clic.webp"><img src="assets/projets/phishing-taux-clic.webp" alt="Taux de clic comparé au benchmark sectoriel, en baisse de 19 % à 13 % entre février et août" loading="lazy" width="1400" height="610"></button><figcaption>Taux de clic face au benchmark sectoriel : baisse nette depuis février.</figcaption></figure>
+          <figure class="gallery-wide"><button type="button" data-full="assets/projets/phishing-taux-signalement.webp"><img src="assets/projets/phishing-taux-signalement.webp" alt="Taux de signalement autour de 30 %, légèrement sous la médiane sectorielle" loading="lazy" width="1400" height="510"></button><figcaption>Taux de signalement : autour de 30 %, encore un peu sous la médiane du secteur (~35 %).</figcaption></figure>
+          <figure><button type="button" data-full="assets/projets/phishing-clic-difficulte.webp"><img src="assets/projets/phishing-clic-difficulte.webp" alt="Taux de clic par difficulté : moyen autour de 14 %, facile autour de 10 %" loading="lazy" width="695" height="400"></button><figcaption>Taux de clic par niveau de difficulté, cohérent avec la gradation.</figcaption></figure>
+        </div>
+        <div class="callout"><strong>Lecture honnête des résultats :</strong> le taux de clic baisse régulièrement, ce qui confirme l'effet de la formation menée en parallèle, mais le benchmark sectoriel montre qu'un retard subsiste. Les 30 % de signalements sont aussi sous-estimés : une partie des utilisateurs signale encore par ticket classique. C'est l'argument pour reconduire la campagne chaque année.</div>
+      </div>
+
+      <div class="block">
+        <h3>Difficultés et retour d'expérience</h3>
+        <div class="two">
+          <div class="card"><h4>Adhésion à la formation</h4><p class="prose" style="margin-top:8px">Démarrage lent malgré une formation obligatoire. Les relances automatiques, complétées par quelques relances de la DSI, ont fait l'essentiel.</p></div>
+          <div class="card"><h4>45 minutes, pas une de plus</h4><p class="prose" style="margin-top:8px">Couvrir les risques majeurs pour des profils très différents a demandé plusieurs arbitrages. Priorité aux profils les plus exposés.</p></div>
+          <div class="card"><h4>Un bouton sous-utilisé au départ</h4><p class="prose" style="margin-top:8px">Beaucoup passaient encore par un ticket. Chaque ticket reçu était redirigé vers le bouton avec un mode d'emploi, et ce cas est désormais rare.</p></div>
+          <div class="card"><h4>Communiquer avant, pas pendant</h4><p class="prose" style="margin-top:8px">Présenter l'outil par ce qu'il apporte à l'utilisateur, et non comme une contrainte de plus, aurait levé une bonne partie des réticences.</p></div>
+        </div>
+        <div class="callout">La réussite d'un projet de sensibilisation <strong>dépend de l'adhésion des collaborateurs bien plus que de l'outil</strong>. Sécuriser un terminal ne sert à rien si son utilisateur clique sur n'importe quel lien, et former les utilisateurs ne sert à rien si leurs outils échappent au contrôle de l'IT : les deux projets vont ensemble.</div>
+      </div>
+    </section>
+
+    <section class="panel" id="competences" role="tabpanel" aria-labelledby="tab-competences" tabindex="0">
+      <h2>Compétences</h2>
+      <div class="skills">
+        <div class="card">
+          <h3>Sécurité et détection</h3>
+          <div class="chips">
+            <span class="chip">EDR Cybereason</span><span class="chip">MITRE ATT&amp;CK</span><span class="chip">Durcissement d'infrastructure</span><span class="chip">Réponse à incident</span><span class="chip">Splunk (labs TryHackMe, parcours SOC Analyst L1)</span><span class="chip">Antivirus Trellix</span><span class="chip">Nessus</span><span class="chip">VirusTotal</span><span class="chip">Vade Secure</span><span class="chip">Grafana</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Systèmes et identités</h3>
+          <div class="chips">
+            <span class="chip">Windows Server</span><span class="chip">Active Directory</span><span class="chip">GPO</span><span class="chip">DFS</span><span class="chip">Cycle de vie des comptes</span><span class="chip">Exchange On-Prem</span><span class="chip">Azure / Entra ID (gestion des comptes)</span><span class="chip">MDM (Pushmanager)</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Réseaux</h3>
+          <div class="chips">
+            <span class="chip">Cisco (VLAN, ACL, STP)</span><span class="chip">Firewall Stormshield (cours CSNA suivi)</span><span class="chip">Wireshark</span><span class="chip">Nmap</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Virtualisation et gestion de parc</h3>
+          <div class="chips">
+            <span class="chip">VMware</span><span class="chip">VirtualBox</span><span class="chip">Docker</span><span class="chip">MECM</span><span class="chip">GLPI</span>
+          </div>
+        </div>
+        <div class="card skills-wide">
+          <h3>Méthode</h3>
+          <div class="chips">
+            <span class="chip">Cahiers des charges</span><span class="chip">Documentation technique</span><span class="chip">Pilotage de projet</span><span class="chip">Environnement sensible</span>
+          </div>
+        </div>
+      </div>
+      <p class="note">Formation continue sur <span class="mono">TryHackMe</span>, learning path SOC Analyst Level 1 : triage d'alertes, investigation Windows et réseau, analyse de logs sous Splunk.</p>
+    </section>
+
+    <section class="panel" id="formation" role="tabpanel" aria-labelledby="tab-formation" tabindex="0">
+      <h2>Certifications et formation</h2>
+
+      <div class="card" style="margin-top:28px">
+        <ul class="cert-list">
+          <li><span>Cisco CCNA 1, 2 &amp; 3</span><span class="cert-status mono">obtenue</span></li>
+          <li><span>Cisco CyberOps Associate</span><span class="cert-status mono">obtenue</span></li>
+          <li><span>CEH v13</span><span class="cert-status mono">en cours</span></li>
+          <li><span>Stormshield CSNA (Certified Stormshield Network Administrator)</span><span class="cert-status mono">cours suivi</span></li>
+        </ul>
+      </div>
+
+      <h3 class="subhead">Diplômes</h3>
+      <div class="stack" style="margin-top:16px">
+        <article class="card">
+          <div class="rec-head">
+            <div>
+              <h3>Mastère Expert Systèmes d'Information, spécialisation Cybersécurité (RNCP7)<span class="badge">en cours</span></h3>
+              <p class="rec-org">CFA de Massy</p>
+            </div>
+            <span class="rec-dates mono">2024 – 2026</span>
+          </div>
+        </article>
+        <article class="card">
+          <div class="rec-head">
+            <div>
+              <h3>Bachelor Architecture des Systèmes d'Information</h3>
+              <p class="rec-org">CFA de Massy</p>
+            </div>
+            <span class="rec-dates mono">2023 – 2024</span>
+          </div>
+        </article>
+        <article class="card">
+          <div class="rec-head">
+            <div>
+              <h3>BTS SIO, spécialité SISR</h3>
+              <p class="rec-org">CFA de Massy</p>
+            </div>
+            <span class="rec-dates mono">2021 – 2023</span>
+          </div>
+        </article>
+        <article class="card">
+          <div class="rec-head">
+            <div><h3>Baccalauréat STI2D</h3></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" id="contact" role="tabpanel" aria-labelledby="tab-contact" tabindex="0">
+      <h2>Contact</h2>
+      <p class="lead">Disponible à partir de novembre 2026 pour un poste en cybersécurité ou en administration systèmes et sécurité.</p>
+      <div class="contact-grid">
+        <div class="card contact-item"><span class="k">CV</span><a class="v" href="CV-Thomas-Joffroy.pdf?v=2" target="_blank" rel="noopener">Télécharger (PDF)</a></div>
+        <div class="card contact-item"><span class="k">Email</span><a class="v" href="mailto:thomas.joffroy@gmail.com">thomas.joffroy@gmail.com</a></div>
+        <div class="card contact-item"><span class="k">Téléphone</span><a class="v" href="tel:+33651114707">06 51 11 47 07</a></div>
+        <div class="card contact-item"><span class="k">LinkedIn</span><a class="v" href="https://www.linkedin.com/in/thomas-joffroy91" target="_blank" rel="noopener">linkedin.com/in/thomas-joffroy91</a></div>
+        <div class="card contact-item"><span class="k">Localisation</span><span class="v">Île-de-France (91), permis B, véhiculé</span></div>
+        <div class="card contact-item"><span class="k">Langues</span><span class="v">Français natif (C2), Anglais B2/C1 professionnel</span></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <span>Thomas Joffroy</span>
+      <span>2026</span>
+    </div>
+  </footer>
+
+<dialog class="lightbox" id="lightbox" aria-label="Capture agrandie">
+  <form method="dialog"><button class="close" type="submit">Fermer ✕</button></form>
+  <img alt="">
+</dialog>
+
+<script>
+  (function(){
+    var root = document.documentElement;
+    root.classList.add('js');
+
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+    var panels = tabs.map(function(t){ return document.getElementById(t.getAttribute('aria-controls')); });
+    var tabsBar = document.querySelector('.tabs');
+
+    function select(id, opts){
+      opts = opts || {};
+      var idx = panels.findIndex(function(p){ return p.id === id; });
+      if(idx < 0) idx = 0;
+      tabs.forEach(function(t, i){
+        var on = i === idx;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        panels[i].hidden = !on;
+        panels[i].classList.toggle('is-entering', on);
+      });
+      tabs[idx].scrollIntoView({ block:'nearest', inline:'nearest' });
+      if(opts.push){ history.replaceState(null, '', '#' + panels[idx].id); }
+      if(opts.scroll && tabsBar.getBoundingClientRect().top <= 0){
+        window.scrollTo({ top: tabsBar.offsetTop, behavior:'smooth' });
+      }
+      if(opts.focus){ tabs[idx].focus(); }
+    }
+
+    tabs.forEach(function(tab, i){
+      tab.addEventListener('click', function(){
+        select(panels[i].id, { push:true, scroll:true });
+      });
+      tab.addEventListener('keydown', function(e){
+        var next = null;
+        if(e.key === 'ArrowRight') next = (i + 1) % tabs.length;
+        else if(e.key === 'ArrowLeft') next = (i - 1 + tabs.length) % tabs.length;
+        else if(e.key === 'Home') next = 0;
+        else if(e.key === 'End') next = tabs.length - 1;
+        if(next === null) return;
+        e.preventDefault();
+        select(panels[next].id, { push:true, focus:true });
+      });
+    });
+
+    window.addEventListener('hashchange', function(){
+      select(location.hash.slice(1), { scroll:true });
+    });
+
+    select(location.hash.slice(1));
+  })();
+
+  (function(){
+    var box = document.getElementById('lightbox');
+    if(!box || typeof box.showModal !== 'function') return;
+    var img = box.querySelector('img');
+    document.querySelectorAll('figure button[data-full]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var thumb = btn.querySelector('img');
+        img.src = btn.getAttribute('data-full');
+        img.alt = thumb ? thumb.alt : '';
+        box.showModal();
+      });
+    });
+    box.addEventListener('click', function(e){ if(e.target === box) box.close(); });
+  })();
+</script>
+</body>
+</html>
